@@ -61,8 +61,7 @@ exports.signin = async (req, res) => {
 
 exports.forgotPassword = async (req, res) => {
   const { email } = req.body;
-  // Generate OTP or reset token
-  const otp = '123456'; // This should be generated dynamically
+  const otp = '123456';
   try {
     // Send OTP to user's email
     await mailService.sendOTP(email, otp);

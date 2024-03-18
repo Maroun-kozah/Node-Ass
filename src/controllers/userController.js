@@ -2,11 +2,7 @@ const User = require('../models/User');
 const Complaint = require('../models/Complaint');
 const asyncHandler = require('express-async-handler');
 
-// @desc    Get logged-in user's complaints (paginated)
-// @route   GET /api/users/my-complaints
-// @access  Private
 exports.getMyComplaints = asyncHandler(async (req, res) => {
-    // Assuming you have a 'page' query parameter for pagination
     const pageSize = 10;
     const page = Number(req.query.page) || 1;
 
@@ -22,9 +18,7 @@ exports.getMyComplaints = asyncHandler(async (req, res) => {
     });
 });
 
-// @desc    Submit a new complaint
-// @route   POST /api/users/complaint
-// @access  Private
+
 exports.submitComplaint = asyncHandler(async (req, res) => {
     const { title, description, categories } = req.body;
 
@@ -32,17 +26,15 @@ exports.submitComplaint = asyncHandler(async (req, res) => {
         user: req.user._id,
         title,
         description,
-        categories, // Assuming categories is an array of category IDs
-        status: 'PENDING' // Default status
+        categories,
+        status: 'PENDING'
     });
 
     const createdComplaint = await complaint.save();
     res.status(201).json(createdComplaint);
 });
 
-// @desc    Get details of a specific complaint
-// @route   GET /api/users/complaint/:id
-// @access  Private
+
 exports.getComplaintDetails = asyncHandler(async (req, res) => {
     const complaint = await Complaint.findById(req.params.id);
 
@@ -54,9 +46,6 @@ exports.getComplaintDetails = asyncHandler(async (req, res) => {
     }
 });
 
-// @desc    Delete a complaint
-// @route   DELETE /api/users/complaint/:id
-// @access  Private/Admin
 exports.deleteComplaint = asyncHandler(async (req, res) => {
     const complaint = await Complaint.findById(req.params.id);
 
@@ -69,9 +58,6 @@ exports.deleteComplaint = asyncHandler(async (req, res) => {
     }
 });
 
-// @desc    Change password
-// @route   PUT /api/users/change-password
-// @access  Private
 exports.changePassword = asyncHandler(async (req, res) => {
     const user = await User.findById(req.user._id);
     const { currentPassword, newPassword } = req.body;
