@@ -1,7 +1,7 @@
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-
+const mailService = require('../services/mailService');
 // Function to handle user signup
 exports.signup = async (req, res) => {
     try {
@@ -55,4 +55,19 @@ exports.signin = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: 'Error signing in user.' });
     }
+};
+
+
+
+exports.forgotPassword = async (req, res) => {
+  const { email } = req.body;
+  // Generate OTP or reset token
+  const otp = '123456'; // This should be generated dynamically
+  try {
+    // Send OTP to user's email
+    await mailService.sendOTP(email, otp);
+    res.status(200).json({ message: 'OTP sent to email successfully.' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error sending OTP to email.' });
+  }
 };
